@@ -1,14 +1,15 @@
-const express = require('express');
+import express from 'express';
+import Task from '../models/task.js';
+import verifyToken from '../middleware/authMiddleware.js';
+
 const router = express.Router();
-const Task = require('../models/task');
-const verifyToken = require('../middleware/authMiddleware');
 
 // ➕ Add task
 router.post('/', verifyToken, async (req, res) => {
   try {
     const newTask = new Task({
       task: req.body.task,
-      countdownEnd: req.body.countdownEnd, // ✅ Add this
+      countdownEnd: req.body.countdownEnd,
       userId: req.user.id,
     });
     await newTask.save();
@@ -18,7 +19,6 @@ router.post('/', verifyToken, async (req, res) => {
     res.status(500).json({ message: 'Failed to create task', error: err.message });
   }
 });
-
 
 // 📋 Get all tasks for current user
 router.get('/', verifyToken, async (req, res) => {
@@ -54,4 +54,4 @@ router.delete('/:id', verifyToken, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
