@@ -1,10 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // ✅ add this
+import { useNavigate } from "react-router-dom";
+
+const baseURL = import.meta.env.VITE_API_URL;
 
 export default function Register() {
   const [form, setForm] = useState({ username: "", email: "", password: "" });
-  const navigate = useNavigate(); // ✅ hook for navigation
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -13,19 +15,16 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/register", form);
+      const res = await axios.post(`${baseURL}/api/auth/register`, form);
       alert(res.data.message);
 
-      // ✅ Optional: Auto login after registration
-      const loginRes = await axios.post("http://localhost:5000/api/auth/login", {
+      const loginRes = await axios.post(`${baseURL}/api/auth/login`, {
         email: form.email,
         password: form.password,
       });
 
-      // ✅ Save token and redirect
       localStorage.setItem("token", loginRes.data.token);
-      navigate("/dashboard"); // 🔀 redirect to dashboard
-
+      navigate("/dashboard");
     } catch (err) {
       alert(err.response?.data?.message || "Registration failed");
     }
