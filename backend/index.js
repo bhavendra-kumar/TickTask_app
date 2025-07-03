@@ -5,7 +5,10 @@ require('dotenv').config();
 
 const app = express();
 const port = 5000
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:5173", "https://ticktaskerapp.netlify.app/"],
+  credentials: true,
+}));
 app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URL)
