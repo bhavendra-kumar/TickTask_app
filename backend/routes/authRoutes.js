@@ -1,14 +1,15 @@
-const express = require('express');
+// backend/routes/authRoutes.js
+import express from "express";
+import { register, login } from "../controllers/authController.js";
+import verifyToken from "../middleware/authMiddleware.js";
+
 const router = express.Router();
-const { register, login } = require('../controllers/authController');
-const verifyToken = require('../middleware/authMiddleware');
 
-router.post('/register', register);
-router.post('/login', login);
+router.post("/register", register);
+router.post("/login", login);
 
-// 🔒 Protected route
-router.get('/dashboard', verifyToken, (req, res) => {
+router.get("/dashboard", verifyToken, (req, res) => {
   res.json({ message: `Welcome, your ID is ${req.user.id}` });
 });
 
-module.exports = router;
+export default router; // ✅ This is now a valid default export
