@@ -1,6 +1,6 @@
-import express from 'express';
-import Task from '../models/task.js';
-import verifyToken from '../middleware/authMiddleware.js';
+const express = require('express');
+const Task = require('../models/task');
+const verifyToken = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
@@ -54,4 +54,4 @@ router.delete('/:id', verifyToken, async (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;
