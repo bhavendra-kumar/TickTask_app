@@ -59,19 +59,22 @@ export default function Dashboard() {
   }, []);
 
 
+  const baseURL = import.meta.env.VITE_API_URL;
+
   const fetchTasks = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/tasks", {
+      const res = await axios.get(`${baseURL}/api/tasks`, {
         headers: { Authorization: token },
       });
       const updated = res.data.map((task) => ({
         ...task,
         remainingTime: task.completed ? 0 : new Date(task.countdownEnd) - Date.now(),
         startPlayed: false,
-        endPlayed: false, // ✅ Add this line
+        endPlayed: false,
       }));
       setTasks(updated);
     } catch (err) {
+      console.error("Fetch task error:", err.response?.data || err.message);
       alert("Failed to load tasks");
     }
   };
