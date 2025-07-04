@@ -1,15 +1,14 @@
-import express from "express";
-import mongoose from "mongoose";
-import cors from "cors"; // ✅ Add this
-import dotenv from "dotenv";
-import authRoutes from "./routes/authRoutes.js";
-import taskRoutes from "./routes/taskRoutes.js";
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const authRoutes = require("./routes/authRoutes");
+const taskRoutes = require("./routes/taskRoutes");
 
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ✅ Paste this CORS block after app initialization
 const allowedOrigins = [
   'https://ticktaskerapp.netlify.app',
   'https://main--ticktaskerapp.netlify.app',
@@ -35,12 +34,9 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/tasks", taskRoutes);
 
-// Connect to MongoDB and start server
+// Connect to DB and start server
 mongoose.connect(process.env.MONGO_URL)
   .then(() => {
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
   })
-  .catch((err) => console.error("DB connection error", err));
-
-
-app.listen(port, () => console.log(`Server Connected on http://localhost:${port}`));
+  .catch((err) => console.error(" DB connection error", err));
