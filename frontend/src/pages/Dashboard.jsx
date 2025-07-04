@@ -96,7 +96,7 @@ export default function Dashboard() {
     try {
       const countdownEnd = new Date(Date.now() + totalMillis);
       const res = await axios.post(
-        "http://localhost:5000/api/tasks",
+                 `${baseURL}/api/tasks`, 
         { task: newTask, countdownEnd },
         { headers: { Authorization: token } }
       );
@@ -113,11 +113,10 @@ export default function Dashboard() {
 
   const toggleTask = async (taskId, currentStatus) => {
     try {
-      const res = await axios.put(
-        `http://localhost:5000/api/tasks/${taskId}`,
-        { completed: !currentStatus },
-        { headers: { Authorization: token } }
-      );
+      const res = await axios.put(`${baseURL}/api/tasks/${taskId}`,
+         { completed: !currentStatus },
+          { headers: { Authorization: token } }
+        );
       setTasks(tasks.map((t) => (t._id === taskId ? res.data : t)));
     } catch (err) {
       alert("Failed to update task");
@@ -126,9 +125,9 @@ export default function Dashboard() {
 
   const deleteTask = async (taskId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/tasks/${taskId}`, {
-        headers: { Authorization: token },
-      });
+     await axios.delete(`${baseURL}/api/tasks/${taskId}`,
+       { headers: { Authorization: token } }
+      );
       setTasks(tasks.filter((t) => t._id !== taskId));
     } catch (err) {
       alert("Failed to delete task");
